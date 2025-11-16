@@ -105,22 +105,25 @@ const PlayerFooter = ({ currentSong, onPrevious, onNext }: PlayerFooterProps) =>
       </div>
 
       <div className="flex flex-col items-center gap-2 flex-1">
-        <div className="flex items-center gap-4">
-          <button 
-            className="p-2 rounded-full transition-all hover:scale-110"
-            style={{ color: "hsl(var(--muted-foreground))" }}
-          >
-            <Shuffle className="w-4 h-4" />
-          </button>
+        <div className="flex items-center gap-6">
           <button 
             className="p-2 rounded-full transition-all hover:scale-110 hover:bg-hover-bg"
             style={{ color: "hsl(var(--foreground))" }}
+          >
+            <Shuffle className="w-5 h-5" />
+          </button>
+          <button 
+            className="p-3 rounded-full transition-all hover:scale-110"
+            style={{ 
+              background: "hsl(var(--card))",
+              color: "hsl(var(--foreground))"
+            }}
             onClick={onPrevious}
           >
-            <SkipBack className="w-5 h-5" />
+            <SkipBack className="w-6 h-6" />
           </button>
           <button
-            className="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110"
+            className="w-14 h-14 rounded-full flex items-center justify-center transition-all hover:scale-110 shadow-lg"
             style={{ 
               background: "hsl(var(--primary))",
               color: "hsl(var(--primary-foreground))"
@@ -128,23 +131,26 @@ const PlayerFooter = ({ currentSong, onPrevious, onNext }: PlayerFooterProps) =>
             onClick={() => setIsPlaying(!isPlaying)}
           >
             {isPlaying ? (
-              <Pause className="w-5 h-5" fill="currentColor" />
+              <Pause className="w-7 h-7" fill="currentColor" />
             ) : (
-              <Play className="w-5 h-5" fill="currentColor" />
+              <Play className="w-7 h-7 ml-1" fill="currentColor" />
             )}
+          </button>
+          <button 
+            className="p-3 rounded-full transition-all hover:scale-110"
+            style={{ 
+              background: "hsl(var(--card))",
+              color: "hsl(var(--foreground))"
+            }}
+            onClick={onNext}
+          >
+            <SkipForward className="w-6 h-6" />
           </button>
           <button 
             className="p-2 rounded-full transition-all hover:scale-110 hover:bg-hover-bg"
             style={{ color: "hsl(var(--foreground))" }}
-            onClick={onNext}
           >
-            <SkipForward className="w-5 h-5" />
-          </button>
-          <button 
-            className="p-2 rounded-full transition-all hover:scale-110"
-            style={{ color: "hsl(var(--muted-foreground))" }}
-          >
-            <Repeat className="w-4 h-4" />
+            <Repeat className="w-5 h-5" />
           </button>
         </div>
 
