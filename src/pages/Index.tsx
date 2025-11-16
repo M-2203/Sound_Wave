@@ -1,12 +1,37 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import Sidebar from "@/components/Sidebar";
+import MainView from "@/components/MainView";
+import PlayerFooter from "@/components/PlayerFooter";
+import { playlists, songs, Song } from "@/data/musicData";
 
 const Index = () => {
+  const [activePlaylistId, setActivePlaylistId] = useState(1);
+  const [currentSong, setCurrentSong] = useState<Song | null>(null);
+
+  const filteredSongs = songs.filter((song) => song.playlistId === activePlaylistId);
+  const activePlaylist = playlists.find((p) => p.id === activePlaylistId);
+
+  const handlePlaylistClick = (id: number) => {
+    setActivePlaylistId(id);
+  };
+
+  const handleSongPlay = (song: Song) => {
+    setCurrentSong(song);
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="player-container">
+      <Sidebar
+        playlists={playlists}
+        activePlaylistId={activePlaylistId}
+        onPlaylistClick={handlePlaylistClick}
+      />
+      <MainView
+        songs={filteredSongs}
+        playlistName={activePlaylist?.name || ""}
+        onSongPlay={handleSongPlay}
+      />
+      <PlayerFooter currentSong={currentSong} />
     </div>
   );
 };
