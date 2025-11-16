@@ -8,55 +8,55 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Deep space dark theme */
-    --background: 225 71% 8%;
-    --foreground: 210 40% 98%;
+    /* Deep purple dark theme */
+    --background: 270 50% 8%;
+    --foreground: 270 10% 98%;
 
-    --card: 225 50% 12%;
-    --card-foreground: 210 40% 98%;
+    --card: 270 40% 12%;
+    --card-foreground: 270 10% 98%;
 
-    --popover: 225 50% 12%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 270 40% 12%;
+    --popover-foreground: 270 10% 98%;
 
-    /* Electric cyan primary */
-    --primary: 190 100% 50%;
-    --primary-foreground: 225 71% 8%;
+    /* Rich purple primary */
+    --primary: 271 91% 65%;
+    --primary-foreground: 270 10% 98%;
 
-    /* Purple secondary */
-    --secondary: 271 91% 65%;
-    --secondary-foreground: 210 40% 98%;
+    /* Magenta secondary */
+    --secondary: 330 81% 60%;
+    --secondary-foreground: 270 10% 98%;
 
     /* Muted dark surfaces */
-    --muted: 225 40% 15%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 270 30% 15%;
+    --muted-foreground: 270 15% 65%;
 
-    /* Magenta accent */
-    --accent: 330 81% 60%;
-    --accent-foreground: 210 40% 98%;
+    /* Violet accent */
+    --accent: 260 80% 65%;
+    --accent-foreground: 270 10% 98%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 270 10% 98%;
 
-    --border: 225 30% 20%;
-    --input: 225 30% 20%;
-    --ring: 190 100% 50%;
+    --border: 270 25% 20%;
+    --input: 270 25% 20%;
+    --ring: 271 91% 65%;
 
     --radius: 0.75rem;
 
     /* Custom music player tokens */
-    --player-bg: 225 60% 10%;
-    --sidebar-bg: 225 50% 8%;
-    --hover-bg: 225 40% 18%;
-    --active-bg: 225 50% 22%;
+    --player-bg: 270 45% 10%;
+    --sidebar-bg: 270 40% 8%;
+    --hover-bg: 270 35% 18%;
+    --active-bg: 270 40% 22%;
     
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(190 100% 50%) 0%, hsl(271 91% 65%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(225 50% 12%) 0%, hsl(225 50% 8%) 100%);
-    --gradient-glow: radial-gradient(circle at 50% 0%, hsl(190 100% 50% / 0.15), transparent 50%);
+    /* Purple gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(271 91% 65%) 0%, hsl(330 81% 60%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(270 40% 12%) 0%, hsl(270 40% 8%) 100%);
+    --gradient-glow: radial-gradient(circle at 50% 0%, hsl(271 91% 65% / 0.15), transparent 50%);
     
     /* Shadows */
-    --shadow-glow: 0 0 40px hsl(190 100% 50% / 0.3);
-    --shadow-card: 0 8px 32px hsl(225 71% 4% / 0.4);
+    --shadow-glow: 0 0 40px hsl(271 91% 65% / 0.3);
+    --shadow-card: 0 8px 32px hsl(270 50% 4% / 0.4);
     
     /* Transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

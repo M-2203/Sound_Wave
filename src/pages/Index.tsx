@@ -19,6 +19,30 @@ const Index = () => {
     setCurrentSong(song);
   };
 
+  const handleNext = () => {
+    if (!currentSong) return;
+    
+    const currentIndex = filteredSongs.findIndex((s) => s.id === currentSong.id);
+    if (currentIndex < filteredSongs.length - 1) {
+      setCurrentSong(filteredSongs[currentIndex + 1]);
+    } else {
+      // Loop back to first song
+      setCurrentSong(filteredSongs[0]);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (!currentSong) return;
+    
+    const currentIndex = filteredSongs.findIndex((s) => s.id === currentSong.id);
+    if (currentIndex > 0) {
+      setCurrentSong(filteredSongs[currentIndex - 1]);
+    } else {
+      // Loop to last song
+      setCurrentSong(filteredSongs[filteredSongs.length - 1]);
+    }
+  };
+
   return (
     <div className="player-container">
       <Sidebar
@@ -31,7 +55,11 @@ const Index = () => {
         playlistName={activePlaylist?.name || ""}
         onSongPlay={handleSongPlay}
       />
-      <PlayerFooter currentSong={currentSong} />
+      <PlayerFooter 
+        currentSong={currentSong} 
+        onNext={handleNext}
+        onPrevious={handlePrevious}
+      />
     </div>
   );
 };
