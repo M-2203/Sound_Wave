@@ -1,14 +1,67 @@
 import { Song } from "@/data/musicData";
 import { Play, Pause, SkipBack, SkipForward, Volume2, Repeat, Shuffle } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface PlayerFooterProps {
   currentSong: Song | null;
+  onPrevious: () => void;
+  onNext: () => void;
 }
 
-const PlayerFooter = ({ currentSong }: PlayerFooterProps) => {
+const PlayerFooter = ({ currentSong, onPrevious, onNext }: PlayerFooterProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [volume, setVolume] = useState(70);
+
+  // Auto-play when a new song is selected
+  useEffect(() => {
+    if (currentSong) {
+      setIsPlaying(true);
+      setProgress(0);
+    }
+  }, [currentSong]);
+
+  // Simulate progress when playing
+  useEffect(() => {
+    if (isPlaying && currentSong) {
+      const interval = setInterval(() => {
+        setProgress((prev) => {
+          if (prev >= 100) {
+            setIsPlaying(false);
+            onNext(); // Auto-advance to next song
+            return 0;
+          }
+          return prev + 0.5;
+        });
+      }, 300);
+
+      return () => clearInterval(interval);
+    }
+  }, [isPlaying, currentSong, onNext]);
+
+  const handleVolumeChange = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+    setVolume(percentage);
+  };
+
+  const handleProgressChange = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+    setProgress(percentage);
+  };
+
+  const formatTime = (percentage: number, duration: string) => {
+    if (!duration) return "0:00";
+    const [minutes, seconds] = duration.split(':').map(Number);
+    const totalSeconds = minutes * 60 + seconds;
+    const currentSeconds = Math.floor((totalSeconds * percentage) / 100);
+    const mins = Math.floor(currentSeconds / 60);
+    const secs = currentSeconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
 
   if (!currentSong) {
     return (
@@ -60,8 +113,9 @@ const PlayerFooter = ({ currentSong }: PlayerFooterProps) => {
             <Shuffle className="w-4 h-4" />
           </button>
           <button 
-            className="p-2 rounded-full transition-all hover:scale-110"
+            className="p-2 rounded-full transition-all hover:scale-110 hover:bg-hover-bg"
             style={{ color: "hsl(var(--foreground))" }}
+            onClick={onPrevious}
           >
             <SkipBack className="w-5 h-5" />
           </button>
@@ -80,8 +134,9 @@ const PlayerFooter = ({ currentSong }: PlayerFooterProps) => {
             )}
           </button>
           <button 
-            className="p-2 rounded-full transition-all hover:scale-110"
+            className="p-2 rounded-full transition-all hover:scale-110 hover:bg-hover-bg"
             style={{ color: "hsl(var(--foreground))" }}
+            onClick={onNext}
           >
             <SkipForward className="w-5 h-5" />
           </button>
@@ -95,25 +150,25 @@ const PlayerFooter = ({ currentSong }: PlayerFooterProps) => {
 
         <div className="w-full max-w-md flex items-center gap-2">
           <span className="text-xs" style={{ color: "hsl(var(--muted-foreground))" }}>
-            0:00
+            {formatTime(progress, currentSong.duration)}
           </span>
           <div 
-            className="flex-1 h-1 rounded-full cursor-pointer relative overflow-hidden"
+            className="flex-1 h-1 rounded-full cursor-pointer relative overflow-hidden group"
             style={{ background: "hsl(var(--muted))" }}
-            onClick={(e) => {
-              const rect = e.currentTarget.getBoundingClientRect();
-              const x = e.clientX - rect.left;
-              const percentage = (x / rect.width) * 100;
-              setProgress(percentage);
-            }}
+            onClick={handleProgressChange}
           >
             <div
-              className="h-full rounded-full transition-all"
+              className="h-full rounded-full transition-all relative"
               style={{ 
                 width: `${progress}%`,
                 background: "hsl(var(--primary))"
               }}
-            />
+            >
+              <div 
+                className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                style={{ background: "hsl(var(--primary))" }}
+              />
+            </div>
           </div>
           <span className="text-xs" style={{ color: "hsl(var(--muted-foreground))" }}>
             {currentSong.duration}
@@ -124,20 +179,30 @@ const PlayerFooter = ({ currentSong }: PlayerFooterProps) => {
       <div className="flex items-center gap-2 flex-1 justify-end">
         <Volume2 className="w-5 h-5" style={{ color: "hsl(var(--muted-foreground))" }} />
         <div 
-          className="w-24 h-1 rounded-full"
+          className="w-24 h-1 rounded-full cursor-pointer relative overflow-hidden group"
           style={{ background: "hsl(var(--muted))" }}
+          onClick={handleVolumeChange}
         >
           <div
-            className="h-full rounded-full"
+            className="h-full rounded-full transition-all relative"
             style={{ 
-              width: "70%",
+              width: `${volume}%`,
               background: "hsl(var(--primary))"
             }}
-          />
+          >
+            <div 
+              className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+              style={{ background: "hsl(var(--primary))" }}
+            />
+          </div>
         </div>
+        <span className="text-xs w-8" style={{ color: "hsl(var(--muted-foreground))" }}>
+          {Math.round(volume)}%
+        </span>
       </div>
     </div>
   );
 };
 
 export default PlayerFooter;
+
