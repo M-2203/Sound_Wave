@@ -1,13 +1,26 @@
 import { Playlist } from "@/data/musicData";
-import { Music2 } from "lucide-react";
+import { Music2, Plus } from "lucide-react";
+import { useState } from "react";
 
 interface SidebarProps {
   playlists: Playlist[];
   activePlaylistId: number;
   onPlaylistClick: (id: number) => void;
+  onCreatePlaylist: (name: string) => void;
 }
 
-const Sidebar = ({ playlists, activePlaylistId, onPlaylistClick }: SidebarProps) => {
+const Sidebar = ({ playlists, activePlaylistId, onPlaylistClick, onCreatePlaylist }: SidebarProps) => {
+  const [isCreating, setIsCreating] = useState(false);
+  const [newPlaylistName, setNewPlaylistName] = useState("");
+
+  const handleCreatePlaylist = () => {
+    if (newPlaylistName.trim()) {
+      onCreatePlaylist(newPlaylistName.trim());
+      setNewPlaylistName("");
+      setIsCreating(false);
+    }
+  };
+
   return (
     <div className="sidebar">
       <div className="mb-8">
@@ -21,9 +34,61 @@ const Sidebar = ({ playlists, activePlaylistId, onPlaylistClick }: SidebarProps)
       </div>
 
       <div>
-        <h2 className="text-xs uppercase font-bold mb-4" style={{ color: "hsl(var(--muted-foreground))" }}>
-          Playlists
-        </h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xs uppercase font-bold" style={{ color: "hsl(var(--muted-foreground))" }}>
+            Playlists
+          </h2>
+          <button
+            onClick={() => setIsCreating(true)}
+            className="p-1 rounded-full transition-all hover:scale-110"
+            style={{ background: "hsl(var(--card))" }}
+            title="Create playlist"
+          >
+            <Plus className="w-4 h-4" style={{ color: "hsl(var(--primary))" }} />
+          </button>
+        </div>
+
+        {isCreating && (
+          <div className="mb-4 animate-fade-in">
+            <input
+              type="text"
+              placeholder="Playlist name..."
+              value={newPlaylistName}
+              onChange={(e) => setNewPlaylistName(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleCreatePlaylist()}
+              className="w-full px-3 py-2 rounded-lg text-sm mb-2"
+              style={{
+                background: "hsl(var(--card))",
+                color: "hsl(var(--foreground))",
+                border: "1px solid hsl(var(--border))"
+              }}
+              autoFocus
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={handleCreatePlaylist}
+                className="px-3 py-1 rounded text-sm font-semibold flex-1"
+                style={{
+                  background: "hsl(var(--primary))",
+                  color: "hsl(var(--primary-foreground))"
+                }}
+              >
+                Create
+              </button>
+              <button
+                onClick={() => {
+                  setIsCreating(false);
+                  setNewPlaylistName("");
+                }}
+                className="px-3 py-1 rounded text-sm flex-1"
+                style={{ color: "hsl(var(--muted-foreground))" }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+
         <div>
           {playlists.map((playlist) => (
             <div
